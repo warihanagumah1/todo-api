@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Todo;
 
-
-class TodoRequest extends FormRequest
+class StoreTodoRequest extends FormRequest
 {
     public function authorize()
     {
@@ -18,7 +16,7 @@ class TodoRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'details' => 'required|string',
-            'status' => 'required|string|in:' . implode(',', Todo::statuses()),
+            'status' => 'required|string|in:completed,in progress,not started'
         ];
     }
 }

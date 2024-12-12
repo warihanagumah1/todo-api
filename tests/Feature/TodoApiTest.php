@@ -58,9 +58,33 @@ class TodoApiTest extends TestCase
 
     public function test_can_update_todo()
     {
-        $todo = Todo::factory()->create();
+        $todo = Todo::factory()->create([
+            'title' => 'Original Title',
+            'details' => 'Original Details',
+            'status' => 'not started'
+        ]);
+
         $updateData = [
             'title' => 'Updated Todo',
+            'details' => 'Updated Details',
+            'status' => 'completed'
+        ];
+
+        $response = $this->putJson("/api/todos/{$todo->id}", $updateData);
+
+        $response->assertStatus(200)
+            ->assertJson($updateData);
+    }
+
+    public function test_can_update_todo_partial()
+    {
+        $todo = Todo::factory()->create([
+            'title' => 'Original Title',
+            'details' => 'Original Details',
+            'status' => 'not started'
+        ]);
+
+        $updateData = [
             'status' => 'completed'
         ];
 

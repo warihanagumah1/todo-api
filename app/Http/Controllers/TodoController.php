@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Http\Requests\TodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
+use App\Http\Requests\StoreTodoRequest;
 use Illuminate\Http\Request;
 
 /**
@@ -92,7 +93,7 @@ class TodoController extends Controller
      *     @OA\Response(response="201", description="Todo created successfully")
      * )
      */
-    public function store(TodoRequest $request)
+    public function store(StoreTodoRequest $request)
     {
         $todo = Todo::create($request->validated());
         return response()->json($todo, 201);
@@ -119,7 +120,7 @@ class TodoController extends Controller
      *     @OA\Response(response="200", description="Todo updated successfully")
      * )
      */
-    public function update(TodoRequest $request, Todo $todo)
+    public function update(UpdateTodoRequest $request, Todo $todo)
     {
         $todo->update($request->validated());
         return response()->json($todo);
