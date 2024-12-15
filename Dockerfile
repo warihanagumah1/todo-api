@@ -32,11 +32,12 @@ COPY . /var/www/html
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Generate Swagger documentation
+RUN php artisan config:cache \
+    && php artisan l5-swagger:generate
+
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Run database migrations
-RUN php artisan migrate --force
 
 # Copy Nginx configuration
 COPY ./nginx.conf /etc/nginx/nginx.conf
