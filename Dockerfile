@@ -1,17 +1,16 @@
-FROM php:8.1-fpm
-
-# Set working directory
-WORKDIR /var/www/html
+# Use PHP base image
+FROM php:8.3-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
+    nginx \
     unzip \
-    libzip-dev \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev
+    libonig-dev \
+    zip \
+    curl
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -20,12 +19,20 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy application files
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy application code
 COPY . /var/www/html
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port and run php-fpm
-EXPOSE 8000
-CMD ["php-fpm"]
+# Copy Nginx config
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and PHP-FPM
+CMD service php-fpm start && nginx -g "daemon off;"
