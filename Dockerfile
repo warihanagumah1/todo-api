@@ -1,4 +1,4 @@
-# Use PHP base image
+# Use PHP 8.3 FPM image
 FROM php:8.3-fpm
 
 # Install system dependencies
@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     zip \
-    curl
+    curl \
+    git
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -28,10 +29,10 @@ COPY . /var/www/html
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copy Nginx config
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# Copy Nginx configuration
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80
+# Expose HTTP port
 EXPOSE 80
 
 # Start Nginx and PHP-FPM
