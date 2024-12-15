@@ -28,6 +28,9 @@ WORKDIR /var/www/html
 # Copy application code
 COPY . /var/www/html
 
+# Install Composer dependencies
+RUN composer install --no-dev --optimize-autoloader
+
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
