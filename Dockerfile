@@ -35,6 +35,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Run database migrations
+RUN php artisan migrate --force
+
 # Copy Nginx configuration
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
