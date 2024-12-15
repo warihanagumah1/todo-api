@@ -29,7 +29,7 @@ COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Copy Nginx config
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80
 EXPOSE 80
