@@ -1,17 +1,19 @@
 # Use PHP 8.3 FPM image
 FROM php:8.3-fpm
 
-# Install system dependencies
+# Install system dependencies and required libraries
 RUN apt-get update && apt-get install -y \
     nginx \
     unzip \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev \
+    libzip-dev \
     zip \
     curl \
-    git
+    git \
+    pkg-config \
+    libonig-dev
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
